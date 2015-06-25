@@ -11,6 +11,8 @@ class BaseModel(Model):
 class Position(BaseModel):
 	country = CharField()
 	city = CharField()
+	lat = FloatField()
+	lng = FloatField()
 
 class News(BaseModel):
 	pos = ForeignKeyField(Position, related_name='news')

@@ -17,7 +17,7 @@ class MySpider(scrapy.Spider):
     def start_requests(self):
         BASE_URL = "http://news.youdao.com/search?q={}&start=0&ue=utf8&s=&tl=&keyfrom=news.index"
         # BASE_URL = 'http://maps.googleapis.com/maps/api/geocode/json?address={}&sensor=true'
-        for pos in Position.select().where(Position.country == '中国'):
+        for pos in Position.select().where(Position.id < 11):
             country = pos.country
             city = pos.city
             if city == '':
@@ -51,6 +51,6 @@ class MySpider(scrapy.Spider):
             for i in range(len(desc_list)):
                 item['desc'] += desc_list[i]
             yield item
-            
+
         time.sleep(1)
 

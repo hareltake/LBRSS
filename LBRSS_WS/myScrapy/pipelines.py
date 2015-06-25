@@ -23,4 +23,5 @@ class NewsPipeline(object):
 
         position = Position.select().where(Position.id == news_id)
         News.create(pos=position, title=title, link=link, desc=desc)
+        print news_id
         return item
