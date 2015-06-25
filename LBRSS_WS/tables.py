@@ -1,6 +1,6 @@
 from peewee import *
 
-db = SqliteDatabase('news.sqlite', check_same_thread=False)
+db = SqliteDatabase('LBRSS_WS/news.sqlite', check_same_thread=False)
 
 
 class BaseModel(Model):

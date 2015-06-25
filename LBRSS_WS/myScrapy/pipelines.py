@@ -6,17 +6,21 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from scrapy.exceptions import DropItem
-from tables import News, Position
 import json
 import codecs
+import sqlite3 as lite
+from tables import News, Position
 
 
 class NewsPipeline(object):
-
-    def __init__(self):
-        self.file = codecs.open('items.txt', 'w+', 'utf-8')
+      
 
     def process_item(self, item, spider):
-        line = json.dumps(dict(item)) + '\n'
-        Person.create()
+        news_id = item['id']
+        title = item['title']
+        link = item['link']
+        desc = item['desc']
+
+        position = Position.select().where(Position.id == news_id)
+        News.create(pos=position, title=title, link=link, desc=desc)
         return item
