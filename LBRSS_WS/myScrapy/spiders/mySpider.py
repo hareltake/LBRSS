@@ -52,5 +52,3 @@ class MySpider(scrapy.Spider):
                 item['desc'] += desc_list[i]
             yield item
 
-        time.sleep(1)
-
