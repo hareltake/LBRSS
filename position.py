@@ -14,7 +14,8 @@ f = open('position.txt', 'r')
 for line in f:
     line = line.decode('utf-8')
     pos = line.split(',')
-    if(len(pos[1]) == 1):
+    pos[1] = pos[1][0:-1]
+    if(pos[1] == ''):
         address = pos[0]
     else:
         address = pos[1]
