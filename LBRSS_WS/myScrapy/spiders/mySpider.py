@@ -16,7 +16,7 @@ class MySpider(scrapy.Spider):
     def start_requests(self):
         BASE_URL = "http://news.youdao.com/search?q={}&start=0&ue=utf8&s=&tl=&keyfrom=news.index"
         # BASE_URL = 'http://maps.googleapis.com/maps/api/geocode/json?address={}&sensor=true'
-        for pos in Position.select().where(Position.country == '中国'):
+        for pos in Position.select().where(Position.id < 35):
             country = pos.country
             city = pos.city
             if city == '':
@@ -24,6 +24,7 @@ class MySpider(scrapy.Spider):
             else:
                 q = city
             url = BASE_URL.format(q)
+            print q
             yield scrapy.Request(url, self.parse)
 
     def parsePos(self, response):
@@ -35,18 +36,16 @@ class MySpider(scrapy.Spider):
         if city[-1] == '省' or city[-1] == '市':
             city = city[0:-1]
 
-        news_id = 0
+        pos_id = 0
         for pos in Position.select().where(Position.country == city):
-            news_id = pos.id
+            pos_id = pos.id
         for pos in Position.select().where(Position.city == city):
-            news_id = pos.id
-        print city
-        print news_id
+            pos_id = pos.id
             
         for sel in response.xpath('//li[@class="has-pic"]'):
             item = NewsItem()
 
-            item['id'] = news_id
+            item['id'] = pos_id
 
             item['title'] = ''
             title_list = sel.xpath('h3/a/text()').extract()
@@ -59,4 +58,4 @@ class MySpider(scrapy.Spider):
             desc_list = sel.xpath('p/text()').extract()
             for i in range(len(desc_list)):
                 item['desc'] += desc_list[i]
-            print ''
+            yield item
